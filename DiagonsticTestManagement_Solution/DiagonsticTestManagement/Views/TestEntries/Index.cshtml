@@ -1,0 +1,70 @@
+﻿@model IEnumerable<DiagonsticTestManagement.Models.TestEntry>
+@{
+    ViewBag.Title = "Index";
+}
+
+<div class="row">
+    <div class="col-12">
+        <h3>Test Records</h3>
+        <div class="d-flex justify-content-end mb-1">
+            @Html.ActionLink("Create New", "CreateV1", new { }, new {@class="btn btn-primary btn-sm"})
+        </div>
+        <table class="table table-bordered">
+            <thead class="bg-light">
+                <tr>
+                    <th>@Html.DisplayNameFor(t => t.Picture)</th>
+                    <th>@Html.DisplayNameFor(t => t.PatientName)</th>
+                    <th>@Html.DisplayNameFor(t => t.MobileNo)</th>
+                    <th>@Html.DisplayNameFor(t => t.Age)</th>
+                    <th>@Html.DisplayNameFor(t => t.TestDate)</th>
+                    <th>@Html.DisplayNameFor(t => t.DueDate)</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach(var x in Model)
+                {
+                    <tr>
+                        <td style="width:70px" class="text-center">
+                            <img src="~/Uploads/@x.Picture" style="width:40px" class="rounded-circle" />
+                        </td>
+                        <td>@Html.DisplayFor(t => x.PatientName)</td>
+                        <td>@Html.DisplayFor(t => x.MobileNo)</td>
+                        <td>@Html.DisplayFor(t => x.Age)</td>
+                        <td>@Html.DisplayFor(t => x.TestDate)</td>
+                        <td>@Html.DisplayFor(t => x.DueDate)</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td class="border-end-0">&nbsp;</td>
+                        <td colspan="6" class="border-start-0">
+                            <h4>Test</h4>
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Test Name</th>
+                                        <th>Fee</th>
+                                    </tr>
+
+                                </thead>
+                                @foreach (var y in x.EntryTests)
+                                {
+                                    <tr>
+                                        <td>@y.Test.TestName</td>
+                                        <td class="text-end">@y.Test.Fee.ToString("0.00")</td>
+                                    </tr>
+                                }
+                                <tr>
+                                    <td colspan="2" class="text-end pe-2">
+                                        Total: @x.EntryTests.Sum(t=> t.Test.Fee)
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+

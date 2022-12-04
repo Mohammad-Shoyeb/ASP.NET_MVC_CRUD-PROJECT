@@ -1,0 +1,40 @@
+﻿@model IEnumerable<DiagonsticTestManagement.Models.Test>
+@{
+    ViewBag.Title = "Index";
+}
+
+<div class="row">
+    <div class="col-12">
+        <h3>Tests</h3>
+        <div class="d-flex justify-content-end mb-1">
+            @Html.ActionLink("Add New", "Create", "Tests", new { }, new { @class = "btn btn-primary btn-sm" })
+        </div>
+        <table class="table table-bordered">
+            <thead class="bg-light">
+                <tr>
+                    <th>@Html.DisplayNameFor(x => x.TestName)</th>
+                    <th>@Html.DisplayNameFor(x => x.Fee)</th>
+                    <th>@Html.DisplayNameFor(x => x.TestTypeId)</th>
+                    <th>@Html.DisplayNameFor(x => x.Available)</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var d in Model)
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(x => d.TestName)</td>
+                        <td>@Html.DisplayFor(x => d.Fee)</td>
+                        <td>@Html.DisplayFor(x => d.TestType.TypeName)</td>                      
+                        <td>@(d.Available ? "Yes": "No")</td>
+                        <td>
+                            @Html.ActionLink("Edit", "Edit", "Tests", new { id = d.TestId }, new { @class = "btn btn-secondary btn-sm" })
+                            <a href="@Url.Action("Delete", "Tests", new {id=d.TestId})" class="btn btn-danger btn-sm @(d.EntryTests.Count > 0 ? "disabled" :"")">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+

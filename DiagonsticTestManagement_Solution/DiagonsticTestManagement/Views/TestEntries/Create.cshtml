@@ -1,0 +1,160 @@
+﻿@model DiagonsticTestManagement.ViewModels.TestEntryInputModel
+@{
+    ViewBag.Title = "Create";
+}
+
+<div id="frm">
+    <div class="row">
+        <div class="col-12">
+            <h3>Create new test entry</h3>
+            @using (Html.BeginForm("Create", "TestEntries", FormMethod.Post, new { id = "f", enctype = "multipart/form-data" }))
+            {
+                <div class="form-group mb-1">
+                    @Html.LabelFor(x => x.PatientName, new { @class = "col-form-label col-2" })
+                    <div class="col-4">
+                        @Html.TextBoxFor(x => x.PatientName, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(x => x.PatientName, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group mb-1">
+                    @Html.LabelFor(x => x.Age, new { @class = "col-form-label col-2" })
+                    <div class="col-4">
+                        @Html.TextBoxFor(x => x.Age, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(x => x.Age, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group mb-1">
+                    @Html.LabelFor(x => x.MobileNo, new { @class = "col-form-label col-2" })
+                    <div class="col-4">
+                        @Html.TextBoxFor(x => x.MobileNo, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(x => x.MobileNo, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group mb-1">
+                    @Html.LabelFor(x => x.TestDate, new { @class = "col-form-label col-2" })
+                    <div class="col-4">
+                        @Html.TextBoxFor(x => x.TestDate, new { @class = "form-control date" })
+                        @Html.ValidationMessageFor(x => x.TestDate, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group mb-1">
+                    @Html.LabelFor(x => x.DueDate, new { @class = "col-form-label col-2" })
+                    <div class="col-4">
+                        @Html.TextBoxFor(x => x.DueDate, new { @class = "form-control date" })
+                        @Html.ValidationMessageFor(x => x.DueDate, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group mb-1">
+                    @Html.LabelFor(x => x.Picture, new { @class = "col-form-label col-2" })
+                    <div class="col-4">
+                        @Html.TextBoxFor(x => x.Picture, new { @class = "form-control", type = "file" })
+                        @Html.ValidationMessageFor(x => x.Picture, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="d-flex justify-content-between mb-1">
+                    <h4>Tests</h4>
+                    <button type="button" id="add" class="btn btn-secondary btn-sm">+</button>
+                </div>
+                for (var i = 0; i < Model.Tests.Count; i++)
+                {
+
+                    <div class="form-group row mb-1">
+                        @Html.LabelFor(x => Model.Tests[i].TestId, new { @class = "col-form-label col-2" })
+                        <div class="col-4">
+                            @Html.DropDownListFor(x => Model.Tests[i].TestId, new SelectList(ViewBag.Tests, "TestId", "TestName"), "Select one", new { @class = "form-select select" })
+                            @Html.ValidationMessageFor(x => x.Picture, "", new { @class = "text-danger" })
+                        </div>
+                        @Html.LabelFor(x => Model.Tests[i].Fee, new { @class = "col-form-label col-2" })
+                        <div class="col-4">
+
+                            @Html.TextBoxFor(x => Model.Tests[i].Fee, new { @class = "form-control", @readonly = "true" })
+
+                        </div>
+                    </div>
+
+
+                }
+                <div class="form-group mb-1">
+
+                    <div class="col-4 offset-2">
+                        <button type="submit" class="btn btn-primary">Save</button>
+
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+@section styles {
+    <link href="~/Content/bootstrap-datepicker.standalone.css" rel="stylesheet" />
+    <style>
+
+        .col2 {
+            display: grid;
+            grid-template-columns: 2fr 1fr 2fr 1fre
+        }
+    </style>
+}
+@section scripts {
+    <script src="~/Scripts/jquery-3.6.0.js"></script>
+    <script src="~/Scripts/bootstrap-datepicker.js"></script>
+    <script src="~/Scripts/jquery.validate.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+    <script>
+        function onSuccess() {
+            $("#f").trigger('reset')
+        }
+        $(".date").datepicker({
+            format: "yyyy-mm-dd"
+        });
+        $("#TestDate").val(formatDate($("#TestDate").val()));
+        if ($("#DueDate").val() != "") {
+            $("#DueDate").val(formatDate($("#DueDate").val()));
+        }
+        function formatDate(date) {
+            var d = new Date(date),
+                month = '' + (d.getMonth() + 1),
+                day = '' + d.getDate(),
+                year = d.getFullYear();
+
+            if (month.length < 2)
+                month = '0' + month;
+            if (day.length < 2)
+                day = '0' + day;
+
+            return [year, month, day].join('-');
+        }
+    </script>
+    <script>
+        $(() => {
+            $('.select').change(function () {
+                var p = $(this).attr("id").split("__")[0];
+                console.log($(this).val());
+                $.ajax({
+                    type: "POST",
+                    url: '/TestEntries/GetFee/' + $(this).val(),
+                    dataType: "json",
+                    success: data => {
+                        console.log(data);
+                        $(`#${p}__Fee`).val(data);
+                    }
+                })
+            });
+            $("#add").click(() => {
+                var data = $("#f").serialize();
+                console.log(data);
+                $.ajax({
+                    type: "POST",
+                    url: "/TestEntries/CreateNewField",
+
+                    data: data,
+                    success: r => {
+                        $("#frm").html(r);
+                    }
+
+                });
+            });
+        });
+    </script>
+}
+

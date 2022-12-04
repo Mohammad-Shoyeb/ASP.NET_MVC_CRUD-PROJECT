@@ -1,0 +1,50 @@
+﻿@model DiagonsticTestManagement.Models.Test
+@{
+    ViewBag.Title = "Delete";
+}
+
+<div class="row">
+    <div class="col-12">
+        <h3>Cofirm delete</h3>
+    </div>
+    @Html.HiddenFor(x => x.TestId)
+    <div class="form-group row mb-1">
+        @Html.LabelFor(x => x.TestName, new { @class = "col-form-label col-form-label-sm col-2" })
+        <div class="col-4">
+            @Html.DisplayFor(x => x.TestName)
+        </div>
+    </div>
+    <div class="form-group row mb-1">
+        @Html.LabelFor(x => x.Fee, new { @class = "col-form-label col-form-label-sm col-2" })
+        <div class="col-4">
+            @Html.DisplayFor(x => x.Fee)
+        </div>
+    </div>
+    <div class="form-group row mb-1">
+        @Html.LabelFor(x => x.TestTypeId, new { @class = "col-form-label col-form-label-sm col-2" })
+        <div class="col-4">
+            @Html.DisplayFor(x => x.TestTypeId)
+        </div>
+    </div>
+    <div class="form-group row mb-1">
+        @Html.LabelFor(x => x.Available, new { @class = "col-form-label col-form-label-sm col-2" })
+        <div class="col-4">
+            @Html.CheckBoxFor(x => x.Available, new { @class = "form-check", disabled = "true" })
+        </div>
+    </div>
+    <div class="form-group row mb-1">
+
+        @using (Html.BeginForm())
+        {
+            @Html.HiddenFor(x => x.TestId)
+            <div class="col-4 offset-2">
+                <button type="submit" class="btn btn-danger">Confirm Delete</button>
+            </div>
+        }
+    </div>
+    <div class="col-12">
+
+        @Html.ActionLink("Back to list", "Index")
+    </div>
+</div>
+

@@ -1,0 +1,48 @@
+﻿@model DiagonsticTestManagement.Models.Test
+@using (Ajax.BeginForm("EditTest", "Tests", new { }, new AjaxOptions
+{
+    HttpMethod = "Post",
+    InsertionMode = InsertionMode.Replace,
+    UpdateTargetId = "alert",
+    LoadingElementId = "spinner"
+
+}, new { id = "f" }))
+{
+    @Html.HiddenFor(x => x.TestId)
+    <div class="form-group row mb-1">
+        @Html.LabelFor(x => x.TestName, new { @class = "col-form-label col-form-label-sm col-2" })
+        <div class="col-4">
+            @Html.TextBoxFor(x => x.TestName, new { @class = "form-control form-control-sm" })
+            @Html.ValidationMessageFor(x => x.TestName, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group row mb-1">
+        @Html.LabelFor(x => x.Fee, new { @class = "col-form-label col-form-label-sm col-2" })
+        <div class="col-4">
+            @Html.TextBoxFor(x => x.Fee, new { @class = "form-control form-control-sm", type = "number" })
+            @Html.ValidationMessageFor(x => x.Fee, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group row mb-1">
+        @Html.LabelFor(x => x.TestTypeId, new { @class = "col-form-label col-2" })
+        <div class="col-4">
+            @Html.DropDownListFor(x => x.TestTypeId, new SelectList(ViewBag.TestTypes, "TestTypeId", "TypeName"), "Select", new { @class = "form-select select" })
+            @Html.ValidationMessageFor(x => x.TestTypeId, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group row mb-1">
+        @Html.LabelFor(x => x.Available, new { @class = "col-form-label col-form-label-sm col-2" })
+        <div class="col-4">
+            @Html.CheckBoxFor(x => x.Available, new { @class = "form-check" })
+            @Html.ValidationMessageFor(x => x.Available, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group row mb-1">
+
+        <div class="col-4 offset-2">
+            <button type="submit" class="btn btn-primary">Save</button>
+        </div>
+    </div>
+}
+
+

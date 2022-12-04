@@ -1,0 +1,14 @@
+﻿@model DiagonsticTestManagement.ViewModels.TestViewModel
+<div class="form-group row mb-1">
+    @Html.LabelFor(x => x.TestId, new { @class = "col-form-label col-2" })
+    <div class="col-4">
+        @Html.DropDownListFor(x => x.TestId, new SelectList(ViewBag.Tests, "TestId", "TestName"), "Select one", new { @class = "form-select select" })
+        @Html.ValidationMessageFor(x => x.TestId, "", new { @class = "text-danger" })
+    </div>
+    @Html.LabelFor(x =>x.Fee, new { @class = "col-form-label col-2" })
+    <div class="col-4">
+
+        @Html.TextBoxFor(x => x.Fee, new { @class = "form-control", @readonly = "true" })
+
+    </div>
+</div>
